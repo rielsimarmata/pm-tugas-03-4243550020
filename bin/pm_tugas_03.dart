@@ -2,11 +2,13 @@ import 'dart:io';
 
 typedef MataKuliah = ({String nama, int sks, String nilai});
 
+// Membaca satu baris input dari terminal dengan aman terhadap nilai null.
 String bacaInput(String label) {
   stdout.write(label);
   return stdin.readLineSync() ?? '';
 }
 
+// Validasi SKS harus berupa bilangan bulat 1 sampai 6.
 int validasiSks(String input) {
   final nilai = input.trim();
   if (nilai.isEmpty) {
@@ -21,6 +23,7 @@ int validasiSks(String input) {
   return sks;
 }
 
+// Validasi nilai huruf harus berada di rentang A sampai E.
 String validasiNilai(String input) {
   final nilai = input.trim();
   if (nilai.isEmpty) {
@@ -35,6 +38,7 @@ String validasiNilai(String input) {
   return huruf;
 }
 
+// Mengubah huruf nilai menjadi bobot yang dipakai saat menghitung IP.
 int bobot(String nilai) {
   return switch (nilai.trim().toUpperCase()) {
     'A' => 4,
@@ -46,6 +50,7 @@ int bobot(String nilai) {
   };
 }
 
+// Mengambil data satu mata kuliah dari input dengan pengulangan sampai valid.
 MataKuliah baca(String nama) {
   while (true) {
     final sksInput = bacaInput('SKS     : ').trim();
@@ -58,10 +63,12 @@ MataKuliah baca(String nama) {
   }
 }
 
+// Menjumlahkan seluruh SKS dengan fold agar lebih ringkas.
 int totalSks(List<MataKuliah> data) {
   return data.fold<int>(0, (total, item) => total + item.sks);
 }
 
+// Menghitung IP dengan mengakumulasi SKS x bobot lalu membaginya dengan total SKS.
 double hitungIp(List<MataKuliah> data) {
   final jumlahSks = totalSks(data);
   if (jumlahSks == 0) {
@@ -76,6 +83,7 @@ double hitungIp(List<MataKuliah> data) {
   return totalBobot / jumlahSks;
 }
 
+// Menentukan predikat IP berdasarkan rentang nilai yang sudah ditetapkan.
 String predikat(double ip) {
   return switch (ip) {
     >= 3.51 => 'Dengan Pujian',
@@ -85,6 +93,7 @@ String predikat(double ip) {
   };
 }
 
+// Menyaring mata kuliah dengan bobot di bawah 2 untuk ditampilkan sebagai perbaikan.
 List<String> daftarPerluDiperbaiki(List<MataKuliah> data) {
   return data
       .where((item) => bobot(item.nilai) < 2)
@@ -92,6 +101,7 @@ List<String> daftarPerluDiperbaiki(List<MataKuliah> data) {
       .toList();
 }
 
+// Mencetak tampilan KHS, dengan opsi pengurutan sesuai permintaan user.
 void cetakKhs(List<MataKuliah> data, {bool urutkan = false}) {
   final daftarTampil = urutkan
       ? ([...data]..sort((a, b) {
@@ -123,6 +133,7 @@ void cetakKhs(List<MataKuliah> data, {bool urutkan = false}) {
   }
 }
 
+// Program utama untuk mengumpulkan data, validasi input, dan menampilkan KHS.
 void main() {
   final data = <MataKuliah>[];
 
