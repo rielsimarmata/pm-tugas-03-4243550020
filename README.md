@@ -18,7 +18,7 @@
 - screenshot.png
 
 ## Penjelasan
-Program ini memanfaatkan higher-order function seperti `fold` pada `totalSks()` dan `hitungIp()` untuk menghitung akumulasi SKS dan bobot nilai, serta `where` pada `daftarPerluDiperbaiki()` untuk menyeleksi mata kuliah yang perlu diperbaiki. Fungsi `cetakKhs()` juga memakai `sort` dengan fungsi pembanding untuk mengurutkan data dari nilai tertinggi tanpa mengubah list asli. Di sisi error handling, `validasiSks()` dan `validasiNilai()` melempar `FormatException`, lalu ditangkap di `main()` dengan `try/on FormatException catch` agar data yang tidak valid diabaikan dan program tetap berjalan tanpa crash.
+Program ini memanfaatkan higher-order function seperti `fold` pada `totalSks()` dan `hitungIp()` untuk menghitung akumulasi SKS dan bobot nilai, serta `where` pada `daftarPerluDiperbaiki()` untuk menyeleksi mata kuliah yang perlu diperbaiki. Fungsi `cetakKhs()` juga memakai `sort` dengan fungsi pembanding untuk mengurutkan data dari nilai tertinggi tanpa mengubah list asli. Di sisi error handling, `validasiSks()` dan `validasiNilai()` melempar `FormatException`, lalu ditangkap di `main()` dengan `try/on FormatException catch` agar data yang tidak valid diabaikan dan program tetap berjalan tanpa crash. Dengan struktur seperti ini, logika tetap rapi, modular, dan mudah dipelihara karena setiap fungsi hanya menangani satu tugas utama.
 
 ## Pernyataan penggunaan AI
 <ISI PERNYATAAN>
