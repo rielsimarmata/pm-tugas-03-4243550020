@@ -3,9 +3,9 @@ import 'dart:io';
 typedef MataKuliah = ({String nama, int sks, String nilai});
 
 // Membaca satu baris input dari terminal dengan aman terhadap nilai null.
-String bacaInput(String label) {
+String? bacaInput(String label) {
   stdout.write(label);
-  return stdin.readLineSync() ?? '';
+  return stdin.readLineSync();
 }
 
 // Validasi SKS harus berupa bilangan bulat 1 sampai 6.
@@ -48,19 +48,6 @@ int bobot(String nilai) {
     'E' => 0,
     _ => throw FormatException('Nilai tidak valid: "$nilai".'),
   };
-}
-
-// Mengambil data satu mata kuliah dari input dengan pengulangan sampai valid.
-MataKuliah baca(String nama) {
-  while (true) {
-    final sksInput = bacaInput('SKS     : ').trim();
-    final sks = validasiSks(sksInput);
-
-    final nilaiInput = bacaInput('Nilai   : ').trim();
-    final nilai = validasiNilai(nilaiInput);
-
-    return (nama: nama, sks: sks, nilai: nilai);
-  }
 }
 
 // Menjumlahkan seluruh SKS dengan fold agar lebih ringkas.
@@ -140,18 +127,27 @@ void main() {
   print('Masukkan data mata kuliah. Kosongkan nama untuk selesai.');
 
   while (true) {
-    final nama = bacaInput('Nama MK : ').trim();
-    if (nama.isEmpty) {
+    final namaInput = bacaInput('Nama MK : ');
+    if (namaInput == null || namaInput.trim().isEmpty) {
       break;
     }
 
-    while (true) {
-      try {
-        data.add(baca(nama));
+    try {
+      final sksInput = bacaInput('SKS     : ');
+      if (sksInput == null) {
         break;
-      } on FormatException catch (error) {
-        print('Data diabaikan: ${error.message}');
       }
+      final sks = validasiSks(sksInput.trim());
+
+      final nilaiInput = bacaInput('Nilai   : ');
+      if (nilaiInput == null) {
+        break;
+      }
+      final nilai = validasiNilai(nilaiInput.trim());
+
+      data.add((nama: namaInput.trim(), sks: sks, nilai: nilai));
+    } on FormatException catch (error) {
+      print('Data diabaikan: ${error.message}');
     }
   }
 
@@ -161,7 +157,7 @@ void main() {
   }
 
   final jawaban = bacaInput('Urutkan dari nilai tertinggi? (y/t) ')
-      .trim()
+      ?.trim()
       .toLowerCase();
   cetakKhs(data, urutkan: jawaban == 'y');
 }
